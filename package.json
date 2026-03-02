@@ -1,0 +1,71 @@
+{
+  "name": "kanzlei-tic-tac-toe",
+  "version": "1.0.0",
+  "description": "Kanzlei Kreuzer & Kreis — Tic Tac Toe mit 80er-Jahre-Synthwave und Juristenhumor",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac --win",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win",
+    "build:linux": "electron-builder --linux"
+  },
+  "build": {
+    "appId": "de.kanzlei-kreuzer-kreis.tictactoe",
+    "productName": "Kanzlei Tic Tac Toe",
+    "files": [
+      "main.js",
+      "tic-tac-toe.html",
+      "icons/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.games",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "icons/icon.icns"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "icons/icon.ico"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "icon": "icons/icon.png",
+      "category": "Game"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "installerLanguages": ["de"],
+      "language": "1031"
+    },
+    "dmg": {
+      "title": "Kanzlei Tic Tac Toe",
+      "contents": [
+        { "x": 130, "y": 220 },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ]
+    }
+  },
+  "keywords": ["tic-tac-toe", "game", "lawyer", "80s", "synthwave", "juristenhumor"],
+  "author": "Kanzlei Kreuzer & Kreis",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0"
+  }
+}
