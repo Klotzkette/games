@@ -23,26 +23,38 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "dir"
         }
       ],
-      "icon": "icons/icon.icns"
+      "icon": "icons/icon.png"
     },
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
-      "icon": "icons/icon.ico"
+      "icon": "icons/icon.png"
     },
     "linux": {
-      "target": ["AppImage"],
+      "target": [
+        "AppImage"
+      ],
       "icon": "icons/icon.png",
       "category": "Game"
     },
@@ -50,22 +62,40 @@
       "oneClick": true,
       "perMachine": false,
       "allowToChangeInstallationDirectory": false,
-      "installerLanguages": ["de"],
+      "installerLanguages": [
+        "de"
+      ],
       "language": "1031"
     },
     "dmg": {
       "title": "Kanzlei Tic Tac Toe",
       "contents": [
-        { "x": 130, "y": 220 },
-        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
       ]
     }
   },
-  "keywords": ["tic-tac-toe", "game", "lawyer", "80s", "synthwave", "juristenhumor"],
+  "keywords": [
+    "tic-tac-toe",
+    "game",
+    "lawyer",
+    "80s",
+    "synthwave",
+    "juristenhumor"
+  ],
   "author": "Kanzlei Kreuzer & Kreis",
   "license": "MIT",
   "devDependencies": {
     "electron": "^33.0.0",
-    "electron-builder": "^25.0.0"
+    "electron-builder": "^25.0.0",
+    "sharp": "^0.34.5"
   }
 }
