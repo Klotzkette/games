@@ -3,6 +3,8 @@ name: Build & Release
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
 
@@ -54,10 +56,16 @@ jobs:
           name: macos-build
           path: dist/
 
+      - name: Get version
+        id: version
+        run: echo "version=$(node -p 'require(\"./package.json\").version')" >> "$GITHUB_OUTPUT"
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          name: "Kanzlei Tic Tac Toe ${{ github.ref_name }}"
+          tag_name: "v${{ steps.version.outputs.version }}"
+          name: "Kanzlei Tic Tac Toe v${{ steps.version.outputs.version }}"
+          make_latest: true
           body: |
             ## Kanzlei Kreuzer & Kreis — Tic Tac Toe
 
