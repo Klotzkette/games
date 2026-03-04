@@ -1,0 +1,88 @@
+name: Build & Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npx electron-builder --win portable --x64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: dist/*.exe
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npx electron-builder --mac dmg --x64 --arm64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: dist/*.dmg
+
+  release:
+    needs: [build-windows, build-macos]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+          path: dist/
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: macos-build
+          path: dist/
+
+      - name: Get version
+        id: version
+        run: echo "version=$(node -p 'require(\"./package.json\").version')" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ steps.version.outputs.version }}"
+          name: "Kanzlei Tic Tac Toe v${{ steps.version.outputs.version }}"
+          make_latest: true
+          body: |
+            ## Kanzlei Kreuzer & Kreis — Tic Tac Toe
+
+            Das ultimative Juristen-Tic-Tac-Toe mit 80er-Jahre-Synthwave!
+
+            ### Downloads
+            - **`.exe`** — Windows (Portable, einfach starten)
+            - **`.dmg`** — macOS (Intel + Apple Silicon)
+            - **`tic-tac-toe.html`** — Im Browser spielen (kein Download nötig)
+
+            ### Features
+            - § Paragraph-Regen über den gesamten Bildschirm
+            - 80er-MIDI-Synthwave-Musik (FM-Synth, Arpeggiator, TR-808 Drums)
+            - CRT-Scanlines, Retro-Grid, Neon-Glow
+            - 24+ Juristenhumor-Sprüche
+            - Richterhammer-Animation bei Sieg
+          files: |
+            dist/*.exe
+            dist/*.dmg
+            tic-tac-toe.html
